@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- templates/recognize.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{% block title %}HandSpeak{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+  <div class="page">
+    <main class="center">
+      <h2>Live Recognition</h2>
+
+      <div class="card" style="max-width:900px; width:100%; text-align:center;">
+        <img src="{{ url_for('video_feed') }}" alt="live feed" class="video" />
+        <p style="margin-top:10px;">Detected: <strong id="detected">{{ practice or '...' }}</strong></p>
+
+        <div class="controls" style="margin-top:8px;">
+          <button id="speak-btn" class="btn">🔊 Speak</button>
+          <button class="btn outline" onclick="window.location.href='{{ url_for('learn') }}'">Back</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Audio files (place in static/sounds/) -->
+  <audio id="success-sound" src="{{ url_for('static', filename='sounds/correct.mp3') }}"></audio>
+  <audio id="wrong-sound" src="{{ url_for('static', filename='sounds/wrong.mp3') }}"></audio>
+
+<script>
+  // Poll latest label and dispatch event for sound feedback
+  let lastLabel = "";
+  async function pollLabel(){
+    try {
+      const res = await fetch('/get_label');
+      const label = (await res.text()).trim();
+      const detectedEl = document.getElementById('detected');
+      // update UI only when changed
+      if (label !== lastLabel) {
+        detectedEl.innerText = label || '...';
+        // dispatch custom event
+        const ev = new CustomEvent('signDetected', { detail: label });
+        document.dispatchEvent(ev);
+        lastLabel = label;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  setInterval(pollLabel, 400);
+  pollLabel();
+
+  // Speak detected text
+  document.getElementById('speak-btn').addEventListener('click', () => {
+    const text = document.getElementById('detected').innerText || 'No sign';
+    const msg = new SpeechSynthesisUtterance(text);
+    speechSynthesis.speak(msg);
+  });
+
+  // Sound feedback: when signDetected event fires, play correct/wrong depending on practice target
+  document.addEventListener('signDetected', function(e){
+    const detected = (e.detail || "").toUpperCase();
+    const practiceElText = "{{ practice }}".toUpperCase() || "";
+    // if there's a practice target on the page, compare and play sound
+    if (practiceElText && practiceElText.length === 1 && detected) {
+      if (detected === practiceElText) {
+        const s = document.getElementById('success-sound');
+        if (s) { s.currentTime = 0; s.play(); }
+      } else {
+        const s2 = document.getElementById('wrong-sound');
+        if (s2) { s2.currentTime = 0; s2.play(); }
+      }
+    }
+  });
+
+
+  const videoFrame = document.getElementById("video-stream");
+
+// Remove animation classes after effect ends
+videoFrame.addEventListener("animationend", () => {
+    videoFrame.classList.remove("correct-glow");
+    videoFrame.classList.remove("wrong-shake");
+});
+
+function animateFeedback(isCorrect) {
+    if (isCorrect) {
+        videoFrame.classList.add("correct-glow");
+        successSound.play();
+    } else {
+        videoFrame.classList.add("wrong-shake");
+        errorSound.play();
+    }
+}
+
+</script>
+{% endblock %}

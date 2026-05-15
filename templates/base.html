@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}HandSpeak{% endblock %}</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <!-- AOS Animation -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>AOS.init();</script>
+</head>
+
+<body>
+
+  <!---------------- NAVBAR ---------------->
+  <nav class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='img/logo1.png') }}" class="logo">
+        <span class="brand">HandSpeak</span>
+    </div>
+
+    <div class="nav-right">
+        <a href="/">Home</a>
+        <a href="/learn">Learn</a>
+        <a href="/recognize">Recognize</a>
+        <a href="/quiz">Quiz</a>
+        <a href="/progress">Progress</a>
+
+        {% if session.get('user_id') %}
+            <a href="/logout" class="btn">Logout</a>
+        {% else %}
+            <a href="/login" class="btn">Login</a>
+            <a href="/register" class="btn-outline">Register</a>
+        {% endif %}
+    </div>
+</nav>
+
+
+  <!---------------- PAGE CONTENT ---------------->
+  <div class="container" style="padding-top: 90px;">
+    {% block content %}{% endblock %}
+  </div>
+
+  <!---------------- FOOTER ---------------->
+  <footer class="site-footer">
+    <div class="footer-container">
+
+      <div class="footer-about">
+        <a class="d-flex align-items-center" href="{{ url_for('index') }}">
+          <img src="{{ url_for('static', filename='img/logo1.png') }}" alt="HandSpeak Logo" height="75" width="120">
+        </a>
+        <p>Learn sign language with real-time AI recognition and interactive quizzes.</p>
+      </div>
+
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="{{ url_for('learn') }}">Learn</a></li>
+          <li><a href="{{ url_for('recognize') }}">Recognition</a></li>
+          <li><a href="{{ url_for('quiz') }}">Quiz</a></li>
+          <li><a href="{{ url_for('progress') }}">Progress</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-contact">
+        <h4>Contact Us</h4>
+        <p>📩 handspeak@gmail.com</p>
+        <p>📍 Pune, India</p>
+        <p>📞 9370505712</p>
+      </div>
+
+      <div class="footer-social">
+        <h4>Follow Us</h4>
+        <div class="social-icons">
+          <a href="#"><img src="{{ url_for('static', filename='img/facebook.png') }}"></a>
+          <a href="#"><img src="{{ url_for('static', filename='img/instagram.png') }}"></a>
+          <a href="#"><img src="{{ url_for('static', filename='img/twitter.png') }}"></a>
+          <a href="#"><img src="{{ url_for('static', filename='img/linkedin.png') }}"></a>
+          <a href="#"><img src="{{ url_for('static', filename='img/Github.png') }}"></a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 <strong>HandSpeak</strong> | Built with ❤️ by VIT & Team</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

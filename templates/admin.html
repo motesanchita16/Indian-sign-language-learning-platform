@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="center">
+  <h2>Admin — Upload Sign Image</h2>
+  <div class="card">
+    <form method="POST" enctype="multipart/form-data">
+      <input name="label" placeholder="Letter (A-Z)" maxlength="1" required />
+      <input type="file" name="file" accept="image/*" required />
+      <button class="btn" type="submit">Upload</button>
+    </form>
+    <p class="muted">Uploaded images are saved into dataset/{LETTER}/</p>
+    <p class="muted">To retrain, run <code>python train_model_isl.py</code></p>
+  </div>
+</section>
+{% endblock %}

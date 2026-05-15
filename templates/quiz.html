@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="center">
+  <h2>Quiz Mode</h2>
+  <div class="card">
+    <img src="{{ url_for('video_feed') }}" class="video" />
+    <h3>Show the sign for: <span id="target">-</span></h3>
+    <p>Detected: <span id="det">...</span></p>
+    <div class="row">
+      <button class="btn" onclick="nextQ()">Next</button>
+      <button class="btn" onclick="check()">Check</button>
+    </div>
+    <p>Score: <span id="score">0</span></p>
+    <div class="save">
+      <input id="username" placeholder="Your name"/>
+      <button class="btn" onclick="saveScore()">Save</button>
+    </div>
+  </div>
+</section>
+
+<script>
+let score = 0;
+let current = "";
+
+async function nextQ(){
+  const res = await fetch('/quiz_question');
+  const j = await res.json();
+  current = j.letter;
+  document.getElementById('target').innerText = current;
+}
+setInterval(async () => {
+  const r = await fetch('/get_label');
+  document.getElementById('det').innerText = await r.text() || '...';
+}, 400);
+
+async function check(){
+  const res = await fetch('/check_answer', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({expected: current})
+  });
+  const j = await res.json();
+  if(j.correct){
+    score++; new Audio('{{ url_for("static", filename="sounds/correct.mp3") }}').play();
+    alert("Correct!");
+  } else {
+    new Audio('{{ url_for("static", filename="sounds/wrong.mp3") }}').play();
+    alert("Wrong: detected " + j.detected);
+  }
+  document.getElementById('score').innerText = score;
+  nextQ();
+}
+
+function saveScore(){
+  const username = document.getElementById('username').value || 'Anonymous';
+  const f = new FormData();
+  f.append('username', username); f.append('score', score);
+  fetch('/save_score', {method:'POST', body: f}).then(()=>window.location.href='/progress');
+}
+
+nextQ();
+</script>
+{% endblock %}

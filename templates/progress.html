@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}HandSpeak{% endblock %}
+{% block content %}
+
+<div class="text-center mb-4">
+  <h2 class="fw-bold text-primary">📊 Learning Progress</h2>
+  <p class="text-muted">Track your performance and see your growth over time</p>
+</div>
+
+<div class="card mx-auto" style="max-width:900px;">
+  <canvas id="progressChart" height="240"></canvas>
+</div>
+
+<div class="card mx-auto mt-4" style="max-width:900px;">
+  <h4 class="fw-bold mb-3">Saved Scores</h4>
+  <table class="table table-striped table-hover align-middle">
+    <thead class="table-primary">
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Score</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in data %}
+      <tr>
+        <td>{{ item.id }}</td>
+        <td>{{ item.username }}</td>
+        <td><span class="fw-bold text-success">{{ item.score }}</span></td>
+        <td>{{ item.date }}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="4" class="text-center text-muted">No records found yet.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const usernames = {{ usernames | default([]) | tojson | safe }};
+  const scores = {{ scores | default([]) | tojson | safe }};
+
+
+let labels = usernames;
+let dataVals = scores;
+
+if (labels.length > 30) {
+  labels = labels.slice(-30);
+  dataVals = dataVals.slice(-30);
+}
+
+const ctx = document.getElementById('progressChart').getContext('2d');
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: 'Quiz Scores',
+      data: dataVals,
+      backgroundColor: 'rgba(79,70,229,0.85)',
+      borderRadius: 8,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 100
+      }
+    },
+    plugins: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: "Your Score History",
+        color: "#4f46e5",
+        font: { size: 18, weight: 'bold' }
+      }
+    }
+  }
+});
+</script>
+{% endblock %}

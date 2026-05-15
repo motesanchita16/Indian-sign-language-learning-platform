@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<div class="auth-page">
+    <div class="auth-card">
+        <h2 class="auth-title">Create Account</h2>
+        <p class="auth-subtitle">Join our learning community</p>
+
+        <form action="/register" method="POST">
+
+            <div class="auth-input">
+                <label>Full Name</label>
+                <input type="text" name="fullname" required>
+            </div>
+
+            <div class="auth-input">
+                <label>Email</label>
+                <input type="email" name="email" required>
+            </div>
+
+            <div class="auth-input">
+                <label>Username</label>
+                <input type="text" name="username" required>
+            </div>
+
+            <div class="auth-input">
+                <label>Password</label>
+                <input type="password" name="password" required>
+            </div>
+
+            <button class="auth-btn" type="submit">Register</button>
+
+            <p class="auth-switch">
+                Already have an account? <a href="/login">Login</a>
+            </p>
+        </form>
+    </div>
+</div>

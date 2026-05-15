@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="grid-page">
+  <h2>Learn ISL — Alphabet</h2>
+  <div class="grid">
+    {% for letter in letters %}
+      <div class="sign-card">
+        <img src="{{ url_for('static', filename='img/signs/' + letter + '.jpg') }}" alt="{{ letter }}" />
+        <h4>{{ letter }}</h4>
+        <div><a class="btn" href="{{ url_for('recognize') }}?practice={{ letter }}">Practice</a></div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

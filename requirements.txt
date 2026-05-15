@@ -1,0 +1,12 @@
+flask
+flask_sqlalchemy
+opencv-python
+mediapipe 
+numpy
+tensorflow        # large; needed to run .h5 model or train
+tensorflow-lite   # optional; tflite runtime (pip package name may vary)
+Pillow
+chartjs-python    # not required — Chart.js used on client
+typing_extensions>=4.6
+SQLAlchemy
+Flask-SQLAlchemy

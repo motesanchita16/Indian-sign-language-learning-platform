@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+{% block title %}{% endblock %}
+<!-- Hero Section -->
+<section class="hero-modern">
+  <div class="hero-container">
+    <div class="hero-text">
+      <h1 class="hero-title">Welcome to <span class="brand"></span></h1>
+      <p class="hero-desc">Empowering you to learn <strong>Indian Sign Language</strong> We help you learn Indian Sign
+        Language (ISL) in a fun and simple way. Our lessons are interactive, so you can practice signs and get better
+        every day.
+        With smart AI tools, you can check your hand signs and improve quickly. You’ll also enjoy fun quizzes that make
+        learning exciting.
+        Learning ISL helps you talk to more people and understand the Deaf community better. It’s a great way to build
+        kindness, connection, and confidence.
+        Let’s learn together—one sign at a time!
+      </p>
+      <div class="hero-buttons">
+        <a href="{{ url_for('learn') }}" class="btn primary">Start Learning</a>
+        <a href="{{ url_for('recognize') }}" class="btn ghost">Try Live Recognition</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="{{ url_for('static', filename='img/signs/A.jpg') }}" alt="Sign Language Preview" class="hero-img">
+      <div class="floating-badge">🤟 Learn With AI</div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-highlight">
+  <h2 class="section-title">Why Choose HandSpeak?</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="icon">📚</div>
+      <h3>Step-by-Step Lessons</h3>
+      <p>Learn ISL alphabets and words with clear visuals and voice explanations.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🎥</div>
+      <h3>Live Recognition</h3>
+      <p>Real-time webcam sign detection powered by AI & Machine Learning.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🧩</div>
+      <h3>Interactive Quizzes</h3>
+      <p>Reinforce your learning with gamified challenges and feedback.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">📊</div>
+      <h3>Progress Tracking</h3>
+      <p>Monitor your improvement and stay motivated with daily streaks.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Sign of the Day -->
+<section class="sign-of-day-section">
+  <div class="sign-card-highlight">
+    <img src="{{ url_for('static', filename='img/signs/' + today_letter + '.jpg') }}" alt="Sign of the Day"
+      class="sign-day-img">
+    <div class="sign-info">
+      <h2>Sign of the Day: <span class="accent">{{ today_letter }}</span></h2>
+      <p>Meaning: {{ meaning }}</p>
+      <a href="{{ url_for('learn') }}" class="btn primary small">Practice Now</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- About -->
+<section class="about-modern">
+  <div class="about-content">
+    <h2>About <span class="brand">HandSpeak</span></h2>
+    <p>HandSpeak is an AI-powered platform that helps users learn Indian Sign Language (ISL) interactively through
+      camera-based gesture recognition and smart learning modules.</p>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-banner">
+  <h2>Ready to Start Your Sign Language Journey?</h2>
+  <a href="{{ url_for('learn') }}" class="btn glow">Join Now 🚀</a>
+</section>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+flask
+flask-sqlalchemy
+opencv-python
+mediapipe
+tensorflow
+numpy
+scikit-learn
+matplotlib
+pillow
+werkzeug
